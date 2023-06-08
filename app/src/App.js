@@ -3,6 +3,14 @@ import { useEffect, useState } from 'react';
 import deploy from './deploy';
 import Escrow from './Escrow';
 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
 export async function approve(escrowContract, signer) {
@@ -12,8 +20,9 @@ export async function approve(escrowContract, signer) {
 
 function App() {
   const [escrows, setEscrows] = useState([]);
-  const [account, setAccount] = useState();
-  const [signer, setSigner] = useState();
+  const [account, setAccount] = useState("");
+  const [signer, setSigner] = useState({});
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     async function getAccounts() {
@@ -24,14 +33,28 @@ function App() {
     }
 
     getAccounts();
+
   }, [account]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      
+    } else {
+      newContract();
+    }
+
+    setValidated(true);
+  };
 
   async function newContract() {
     const beneficiary = document.getElementById('beneficiary').value;
     const arbiter = document.getElementById('arbiter').value;
-    const value = ethers.BigNumber.from(document.getElementById('wei').value);
+    const weiValue = ethers.utils.parseUnits(document.getElementById('eth').value, "ether")
+    const value = ethers.BigNumber.from(weiValue);
     const escrowContract = await deploy(signer, arbiter, beneficiary, value);
-
 
     const escrow = {
       address: escrowContract.address,
@@ -54,47 +77,54 @@ function App() {
   }
 
   return (
-    <>
-      <div className="contract">
-        <h1> New Contract </h1>
-        <label>
-          Arbiter Address
-          <input type="text" id="arbiter" />
-        </label>
+    <Container className="my-2">
+      <Row>
+        <Col className="mx-1">
+          <Card>
+            <Card.Header as={'h3'}>New Contract</Card.Header>
+            <Card.Body>
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <InputGroup className="mb-3" >
+                  <InputGroup.Text>Depositor</InputGroup.Text>
+                  <Form.Control type="text" id="depositor" aria-label="Depositor" disabled value={account} />
+                </InputGroup>
+                <InputGroup className="mb-3" hasValidation>
+                  <InputGroup.Text>Arbiter</InputGroup.Text>
+                  <Form.Control type="text" id="arbiter" aria-label="Arbiter" required />
+                </InputGroup>
+                <InputGroup className="mb-3" hasValidation>
+                  <InputGroup.Text>Beneficiary</InputGroup.Text>
+                  <Form.Control type="text" id="beneficiary" aria-label="Beneficiary" required />
+                </InputGroup>
+                <InputGroup className="mb-3" hasValidation>
+                  <InputGroup.Text>Deposit Amount (in Eth)</InputGroup.Text>
+                  <Form.Control type="text" id="eth" aria-label="eth" required />
+                </InputGroup>
 
-        <label>
-          Beneficiary Address
-          <input type="text" id="beneficiary" />
-        </label>
+                <Button
+                  variant="primary"
+                  type="submit"
+                >
+                  Deploy
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
 
-        <label>
-          Deposit Amount (in Wei)
-          <input type="text" id="wei" />
-        </label>
+        <Col className="mx-1 existing-contracts">
+          <Card>
+            <Card.Header as={'h3'}> Existing Contracts </Card.Header>
 
-        <div
-          className="button"
-          id="deploy"
-          onClick={(e) => {
-            e.preventDefault();
-
-            newContract();
-          }}
-        >
-          Deploy
-        </div>
-      </div>
-
-      <div className="existing-contracts">
-        <h1> Existing Contracts </h1>
-
-        <div id="container">
-          {escrows.map((escrow) => {
-            return <Escrow key={escrow.address} {...escrow} />;
-          })}
-        </div>
-      </div>
-    </>
+            <Card.Body>
+              {escrows.map((escrow) => {
+                return <Escrow key={escrow.address} {...escrow} />;
+              })}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
