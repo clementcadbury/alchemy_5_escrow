@@ -1,4 +1,5 @@
 {
+  "homepage": "http://clementcadbury.github.io/alchemy_5_escrow/",
   "name": "Escrow-Hardhat",
   "version": "1.0.0",
   "description": "",
@@ -8,7 +9,9 @@
     "compile": "npx hardhat compile",
     "chain": "npx hardhat node",
     "app": "npm run start --prefix app",
-    "build": "npm run build --prefix app"
+    "build": "npm run build --prefix app",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d app/build"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +20,7 @@
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.5",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.7",
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "gh-pages": "^5.0.0",
     "hardhat": "^2.12.4"
   },
   "browserslist": [
