@@ -8,16 +8,20 @@ contract Escrow {
 
 	bool public isApproved;
 
+	event Approved(uint _balance);
+	event EscrowDeployed(address indexed _depositor,address indexed _arbiter,address indexed _beneficiary);
+
 	constructor(address _arbiter, address _beneficiary) payable {
 		arbiter = _arbiter;
 		beneficiary = _beneficiary;
 		depositor = msg.sender;
+		emit EscrowDeployed(depositor,arbiter,beneficiary);
 	}
 
-	event Approved(uint);
+	
 
 	function approve() external {
-		require(msg.sender == arbiter);
+		require(msg.sender == arbiter,'not arbiter');
 		uint balance = address(this).balance;
 		(bool sent, ) = payable(beneficiary).call{value: balance}("");
  		require(sent, "Failed to send Ether");
