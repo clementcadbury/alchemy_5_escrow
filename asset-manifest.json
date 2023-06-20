@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.e429a90b.css",
-    "main.js": "/static/js/main.8107cd19.js",
-    "index.html": "/index.html"
+    "main.css": "/alchemy_5_escrow/static/css/main.e429a90b.css",
+    "main.js": "/alchemy_5_escrow/static/js/main.8107cd19.js",
+    "index.html": "/alchemy_5_escrow/index.html"
   },
   "entrypoints": [
     "static/css/main.e429a90b.css",
