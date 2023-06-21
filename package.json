@@ -11,7 +11,8 @@
     "app": "npm run start --prefix app",
     "build": "npm run build --prefix app",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d app/build"
+    "deploy": "gh-pages -d app/build",
+    "npkill": "npx npkill"
   },
   "keywords": [],
   "author": "",
