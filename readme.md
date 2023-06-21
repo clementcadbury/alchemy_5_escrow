@@ -16,10 +16,13 @@ approval emit event that is listened to change escrow react component state
 
 deployed to gh-pages : https://clementcadbury.github.io/alchemy_5_escrow/
 
+Example transaction on Sepolia : https://sepolia.etherscan.io/address/0x0fc3876fe4deb107663dbe3abebe2dba1ab90253
+
 using :
-react
-hardhat
-react-bootstrap for grid, forms, collapse
-fontawesome react component
-gh-pages
-react-toastify to display warnings/errors/infos
+- react
+- hardhat
+- react-bootstrap for grid, forms, collapse
+- fontawesome react component
+- gh-pages
+- react-toastify to display warnings/errors/infos
+- ethers.js interface with a non-deployed contract, and with a deployed contract
