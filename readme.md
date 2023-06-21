@@ -26,3 +26,5 @@ using :
 - gh-pages
 - react-toastify to display warnings/errors/infos
 - ethers.js interface with a non-deployed contract, and with a deployed contract
+
+npkill to clean node_modules
